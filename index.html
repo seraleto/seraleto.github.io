@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sergio Tolaba — Data Analyst</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e17;
+    --bg2: #0f1420;
+    --bg3: #151c2e;
+    --accent: #4f8ef7;
+    --accent2: #7eb8f7;
+    --text: #e8edf5;
+    --text2: #8b9ab5;
+    --text3: #4a5568;
+    --border: #1e2a40;
+    --green: #34d399;
+    --orange: #f59e0b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* GRID BACKGROUND */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.25;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 18px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(10,14,23,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text2);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 48px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .hero-content { max-width: 700px; }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(52px, 8vw, 88px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 28px;
+  }
+
+  h1 .last {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--accent);
+  }
+
+  .hero-desc {
+    font-size: 17px;
+    color: var(--text2);
+    max-width: 520px;
+    margin-bottom: 40px;
+    line-height: 1.8;
+  }
+
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 48px;
+  }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--text2);
+    letter-spacing: 0.08em;
+    background: var(--bg2);
+    transition: all 0.2s;
+  }
+
+  .tag:hover { border-color: var(--accent); color: var(--accent); }
+  .tag.highlight { border-color: var(--accent); color: var(--accent); background: rgba(79,142,247,0.08); }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    padding: 14px 28px;
+    background: var(--accent);
+    color: var(--bg);
+    text-decoration: none;
+    border-radius: 2px;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+
+  .btn-outline {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    padding: 14px 28px;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* STATS */
+  .stats-bar {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 32px 48px;
+    display: flex;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .stat {
+    text-align: center;
+    padding: 0 56px;
+    border-right: 1px solid var(--border);
+  }
+
+  .stat:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* SECTIONS */
+  section {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 48px;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    max-width: 60px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.4;
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 60px;
+    line-height: 1.1;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .about-text p {
+    color: var(--text2);
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+
+  .about-text p strong { color: var(--text); font-weight: 500; }
+
+  .about-stack h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    margin-bottom: 20px;
+    color: var(--text2);
+    text-transform: uppercase;
+  }
+
+  .stack-group { margin-bottom: 32px; }
+
+  .stack-group-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .stack-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 5px 12px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--text2);
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 24px;
+  }
+
+  .project-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 0.3s;
+    cursor: default;
+  }
+
+  .project-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(79,142,247,0.1);
+  }
+
+  .project-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .project-img-placeholder {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, var(--bg3) 0%, #1a2540 100%);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .project-img-placeholder .icon {
+    font-size: 32px;
+    opacity: 0.3;
+  }
+
+  .project-img-placeholder .placeholder-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+  }
+
+  .project-body { padding: 24px 28px 28px; }
+
+  .project-tools {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+
+  .tool-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    padding: 3px 8px;
+    background: rgba(79,142,247,0.1);
+    border: 1px solid rgba(79,142,247,0.25);
+    border-radius: 2px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .project-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  .project-desc {
+    font-size: 14px;
+    color: var(--text2);
+    margin-bottom: 16px;
+    line-height: 1.7;
+  }
+
+  .project-impact {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 16px;
+    background: rgba(52,211,153,0.06);
+    border: 1px solid rgba(52,211,153,0.2);
+    border-radius: 3px;
+  }
+
+  .impact-icon { color: var(--green); font-size: 14px; flex-shrink: 0; margin-top: 2px; }
+
+  .impact-text {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  .impact-text strong { color: var(--green); font-weight: 500; }
+
+  /* EXPERIENCE */
+  .timeline { position: relative; padding-left: 32px; }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), var(--border));
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 48px;
+  }
+
+  .timeline-item:last-child { padding-bottom: 0; }
+
+  .timeline-dot {
+    position: absolute;
+    left: -38px;
+    top: 8px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--accent);
+  }
+
+  .timeline-dot.active { background: var(--accent); }
+
+  .timeline-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  .timeline-role {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .timeline-company {
+    font-size: 14px;
+    color: var(--accent);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  .timeline-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .timeline-items li {
+    font-size: 14px;
+    color: var(--text2);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  .timeline-items li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    top: 3px;
+  }
+
+  .timeline-stack {
+    margin-top: 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+  }
+
+  .timeline-stack span { color: var(--accent); opacity: 0.7; }
+
+  /* CONTACT */
+  .contact-section {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .contact-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .contact-heading {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 20px;
+  }
+
+  .contact-heading .outline {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--accent);
+  }
+
+  .contact-sub {
+    color: var(--text2);
+    font-size: 16px;
+    max-width: 380px;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .contact-link:hover {
+    border-color: var(--accent);
+    transform: translateX(4px);
+  }
+
+  .contact-link-icon {
+    font-size: 18px;
+    width: 36px;
+    text-align: center;
+  }
+
+  .contact-link-content { flex: 1; }
+
+  .contact-link-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  .contact-link-value {
+    font-size: 15px;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 32px 48px;
+    border-top: 1px solid var(--border);
+  }
+
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+  }
+
+  /* FADE IN ANIMATION */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-up {
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+  }
+
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.35s; }
+  .delay-4 { animation-delay: 0.5s; }
+  .delay-5 { animation-delay: 0.65s; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 100px 24px 60px; }
+    section { padding: 70px 24px; }
+    .stats-bar { padding: 24px; gap: 0; flex-wrap: wrap; }
+    .stat { padding: 16px 28px; }
+    .about-grid { grid-template-columns: 1fr; gap: 48px; }
+    .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">sergio.tolaba / data-analyst</div>
+  <ul class="nav-links">
+    <li><a href="#sobre-mi">Sobre mí</a></li>
+    <li><a href="#proyectos">Proyectos</a></li>
+    <li><a href="#experiencia">Experiencia</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-tag fade-up delay-1">Disponible para nuevos proyectos</div>
+    <h1 class="fade-up delay-2">
+      Sergio<br><span class="last">Tolaba</span>
+    </h1>
+    <p class="hero-desc fade-up delay-3">
+      Analista de Datos Senior con experiencia en fintech y telecomunicaciones.
+      Transformo grandes volúmenes de datos en decisiones estratégicas con impacto real en revenue.
+    </p>
+    <div class="hero-tags fade-up delay-4">
+      <span class="tag highlight">SQL · BigQuery</span>
+      <span class="tag highlight">Power BI · Looker</span>
+      <span class="tag">PL/SQL</span>
+      <span class="tag">Simetrik</span>
+      <span class="tag">Fintech</span>
+      <span class="tag">Telco</span>
+      <span class="tag">Agile</span>
+    </div>
+    <div class="hero-cta fade-up delay-5">
+      <a href="mailto:sergio.tolaaba@gmail.com" class="btn-primary">Contactar →</a>
+      <a href="#proyectos" class="btn-outline">Ver proyectos</a>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat">
+    <span class="stat-num">4+</span>
+    <span class="stat-label">años de experiencia</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">3TB</span>
+    <span class="stat-label">datos procesados / día</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">−80%</span>
+    <span class="stat-label">tiempo control manual</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">&lt;2hs</span>
+    <span class="stat-label">respuesta ante fraude</span>
+  </div>
+</div>
+
+<!-- SOBRE MÍ -->
+<section id="sobre-mi">
+  <div class="section-label">Sobre mí</div>
+  <h2>Datos → Decisiones<br>con impacto real</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>
+        Soy Analista de Datos con más de 4 años de experiencia en entornos de <strong>alta complejidad técnica y presión de negocio</strong>, trabajando en fintech y telecomunicaciones.
+      </p>
+      <p>
+        Mi trabajo en <strong>Claro AMX</strong> (Gerencia de Aseguramiento de Ingresos) me permitió desarrollar sistemas de detección de fraude en tiempo real que procesaban ~3 TB de tráfico diario, coordinando con Ingeniería, Marketing y Directorio.
+      </p>
+      <p>
+        En el mundo fintech, trabajé para <strong>dLocal</strong> (pagos en +40 mercados emergentes) y <strong>Mercado Pago México</strong>, desarrollando controles financieros y análisis de comportamiento con foco en revenue y retención.
+      </p>
+      <p>
+        Me apasiona construir <strong>sistemas analíticos que se sostienen solos</strong>: automatizados, escalables y con narrativa clara para stakeholders técnicos y no técnicos.
+      </p>
+    </div>
+    <div class="about-stack">
+      <div class="stack-group">
+        <div class="stack-group-label">Análisis & Visualización</div>
+        <div class="stack-pills">
+          <span class="pill">Power BI</span>
+          <span class="pill">Looker</span>
+          <span class="pill">Looker Studio</span>
+          <span class="pill">Google Sheets</span>
+          <span class="pill">Excel Avanzado</span>
+        </div>
+      </div>
+      <div class="stack-group">
+        <div class="stack-group-label">Bases de Datos</div>
+        <div class="stack-pills">
+          <span class="pill">SQL</span>
+          <span class="pill">PL/SQL</span>
+          <span class="pill">Oracle SQL</span>
+          <span class="pill">Impala</span>
+          <span class="pill">DBeaver</span>
+          <span class="pill">BigQuery</span>
+          <span class="pill">Genesys</span>
+        </div>
+      </div>
+      <div class="stack-group">
+        <div class="stack-group-label">Herramientas</div>
+        <div class="stack-pills">
+          <span class="pill">Simetrik</span>
+          <span class="pill">Jira</span>
+          <span class="pill">Monday</span>
+          <span class="pill">SAP</span>
+          <span class="pill">HubSpot</span>
+          <span class="pill">VS Code</span>
+          <span class="pill">Microsoft 365</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROYECTOS -->
+<section id="proyectos" style="background: var(--bg2); max-width: 100%; padding: 100px 0;">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 48px;">
+    <div class="section-label">Proyectos destacados</div>
+    <h2>Trabajo real,<br>impacto medible</h2>
+    <div class="projects-grid">
+
+      <!-- Proyecto 1 -->
+      <div class="project-card">
+        <div class="project-img-placeholder">
+          <!-- Reemplazar con: <img src="dashboard-heavy-users.png" class="project-img" alt="Dashboard Heavy Users"> -->
+          <div class="icon">📊</div>
+          <div class="placeholder-text">[ subir imagen: dashboard-heavy-users.png ]</div>
+        </div>
+        <div class="project-body">
+          <div class="project-tools">
+            <span class="tool-badge">Power BI</span>
+            <span class="tool-badge">SQL</span>
+            <span class="tool-badge">DBeaver</span>
+          </div>
+          <div class="project-title">Dashboard Heavy Users — Claro AUP</div>
+          <p class="project-desc">
+            Control y visualización de usuarios con alto volumen de tráfico en la red de Claro (Argentina, Paraguay, Uruguay), segmentados por servicio, proveedor y configuración técnica. Actualización automática con detección de anomalías de consumo.
+          </p>
+          <div class="project-impact">
+            <span class="impact-icon">↗</span>
+            <span class="impact-text">Permitió detectar el fraude de red reduciendo el impacto de <strong>40% → 20%</strong> en días pico y el tiempo de respuesta de <strong>semanas → &lt;2 horas</strong>.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Proyecto 2 -->
+      <div class="project-card">
+        <div class="project-img-placeholder">
+          <!-- Reemplazar con: <img src="dashboard-pcrf.png" class="project-img" alt="Dashboard PCRF"> -->
+          <div class="icon">🔄</div>
+          <div class="placeholder-text">[ subir imagen: dashboard-pcrf.png ]</div>
+        </div>
+        <div class="project-body">
+          <div class="project-tools">
+            <span class="tool-badge">Power BI</span>
+            <span class="tool-badge">Oracle SQL</span>
+            <span class="tool-badge">Excel</span>
+          </div>
+          <div class="project-title">Control de Conciliaciones — PCRF AUP</div>
+          <p class="project-desc">
+            Tablero que automatiza la conciliación de configuraciones de líneas móviles en red, comparando dos fuentes de control (CMI vs TMP) y clasificando por tipo de acción, con filtros por fecha, país y tipo de anomalía.
+          </p>
+          <div class="project-impact">
+            <span class="impact-icon">↗</span>
+            <span class="impact-text">Redujo el tiempo de control manual en más del <strong>80%</strong> y habilitó la detección de anomalías masivas en tiempo real.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Proyecto 3 -->
+      <div class="project-card">
+        <div class="project-img-placeholder">
+          <!-- Reemplazar con: <img src="dashboard-roaming.png" class="project-img" alt="Dashboard Roaming"> -->
+          <div class="icon">🌐</div>
+          <div class="placeholder-text">[ subir imagen: dashboard-roaming.png ]</div>
+        </div>
+        <div class="project-body">
+          <div class="project-tools">
+            <span class="tool-badge">Power BI</span>
+            <span class="tool-badge">SQL</span>
+          </div>
+          <div class="project-title">Dashboard Roaming Outcollect — Uruguay</div>
+          <p class="project-desc">
+            Monitoreo diario de líneas extranjeras conectadas a la red de Claro Uruguay en modo roaming, con análisis por país de origen y operador. Comparativas diarias y distribución porcentual del tráfico entrante.
+          </p>
+          <div class="project-impact">
+            <span class="impact-icon">↗</span>
+            <span class="impact-text">Facilitó la validación de acuerdos con operadores internacionales e identificó picos de tráfico para <strong>optimización de acuerdos de roaming</strong>.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCIA -->
+<section id="experiencia">
+  <div class="section-label">Trayectoria</div>
+  <h2>Experiencia<br>profesional</h2>
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-dot active"></div>
+      <div class="timeline-meta">ABR 2026 — ACTUALIDAD</div>
+      <div class="timeline-role">Analista de Datos — Conciliaciones</div>
+      <div class="timeline-company">Coderio · para dLocal (Fintech, +40 mercados)</div>
+      <ul class="timeline-items">
+        <li>Conciliación mensual de extractos bancarios y plataformas de pago vs. registros internos para merchants regionales.</li>
+        <li>Ejecución de conciliaciones manuales, híbridas (Excel + Simetrik + Looker) y automatizadas según complejidad.</li>
+        <li>Gestión de incidencias en Jira y control de tareas en Monday.</li>
+      </ul>
+      <div class="timeline-stack">Stack: <span>Excel · Looker · Simetrik · Jira · Monday</span></div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-meta">ABR 2024 — MAR 2026</div>
+      <div class="timeline-role">Analista de Datos — Aseguramiento de Ingresos</div>
+      <div class="timeline-company">Claro AMX · Gerencia de Aseguramiento de Ingresos y Procesos</div>
+      <ul class="timeline-items">
+        <li>Desarrollo end-to-end de sistema de detección de fraude en red: desde procedures PL/SQL automatizados hasta tablero Power BI presentado a Gerencia y Directorio.</li>
+        <li>Procesamiento de ~3 TB de tráfico diario (CDRs/EDRs) con actualización T−1hs. Redujo fraude pico de 40% a 20% y tiempo de respuesta de semanas a menos de 2 horas.</li>
+        <li>Coordinación transversal con Ingeniería, Marketing, Producto y vendors externos (Nokia, Cisco).</li>
+        <li>Control de conciliaciones de ingresos, auditorías y soporte a nuevas implementaciones.</li>
+      </ul>
+      <div class="timeline-stack">Stack: <span>SQL · PL/SQL · Power BI · Excel · DBeaver · Impala · VS Code</span></div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-meta">ENE 2021 — ABR 2024</div>
+      <div class="timeline-role">Analista de Datos</div>
+      <div class="timeline-company">Apex América · Claro ARG / URY · Mercado Pago MX</div>
+      <ul class="timeline-items">
+        <li>Progresión: Asesor de Ventas → Back Office → Analista de Datos para Claro Argentina, Claro Uruguay y finalmente piloto Mercado Pago México.</li>
+        <li>Dashboards de performance y métricas comerciales en Power BI, presentados directamente a Gerencia y al cliente.</li>
+        <li>Control de comisiones, nóminas (SAP), SPH de equipos y proyecciones de cuenta.</li>
+      </ul>
+      <div class="timeline-stack">Stack: <span>SQL · Power BI · Google Sheets · Excel · Genesys · SAP · HubSpot</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<div class="contact-section" id="contacto">
+  <div class="contact-inner">
+    <div>
+      <div class="contact-heading">
+        Trabajemos<br><span class="outline">juntos</span>
+      </div>
+      <p class="contact-sub">
+        Abierto a oportunidades en análisis de datos, business intelligence y optimización de procesos. Basado en Córdoba, Argentina.
+      </p>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:sergio.tolaaba@gmail.com" class="contact-link">
+        <div class="contact-link-icon">✉</div>
+        <div class="contact-link-content">
+          <div class="contact-link-label">Email</div>
+          <div class="contact-link-value">sergio.tolaaba@gmail.com</div>
+        </div>
+      </a>
+      <a href="tel:+5493517546008" class="contact-link">
+        <div class="contact-link-icon">📱</div>
+        <div class="contact-link-content">
+          <div class="contact-link-label">Teléfono / WhatsApp</div>
+          <div class="contact-link-value">+549 351 754 6008</div>
+        </div>
+      </a>
+      <a href="https://www.linkedin.com/in/sergio-ale-tolaba/" class="contact-link" target="_blank">
+        <div class="contact-link-icon">in</div>
+        <div class="contact-link-content">
+          <div class="contact-link-label">LinkedIn</div>
+          <div class="contact-link-value">linkedin.com/in/sergio-ale-tolaba</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Sergio Tolaba · Data Analyst · Córdoba, Argentina</p>
+</footer>
+
+</body>
+</html>
